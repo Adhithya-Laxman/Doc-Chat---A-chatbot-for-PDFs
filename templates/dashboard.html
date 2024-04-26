@@ -1,0 +1,434 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        h3 {
+            margin-top: 20px;
+            color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ username }}!</h2>
+    
+    <h3>Your Chats:</h3>
+    <ul>
+
+        {% for chats in chat_record %}
+            <li><a href="/chat/{{ userid }}/{{ chats['chatid'] }}">{{pdf_name[loop.index0]}}</a></li>
+        {% endfor %}
+    </ul>
+    <form action="/{{ userid }}" method="post">
+        <input type="hidden" name="userid" value="{{ userid }}">
+        <input type="hidden" name="chatid" value="">
+        <button type="submit">New Chat</button>
+    </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard</title>
+    <style>
+        body {
+            font-family: "Yeseva One", serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbarcontainer {
+            width: auto;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 300px;
+            height: 70px;
+            display: flex;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .navbar {
+
+            width: 500px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        nav ul li {
+            display: inline-block;
+            padding: 20px;
+            text-decoration: none;
+        }
+
+
+
+        .bigcontainer {
+            width: auto;
+            height: 500px;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+
+
+        }
+
+
+        span {
+            color: crimson;
+        }
+
+        .navbarcontainer {
+            width: auto;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .logo {
+
+            width: 300px;
+            height: 70px;
+            display: flex;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-left: 60px;
+            animation: slideFromLeft 1s ease-out forwards;
+
+        }
+
+        .navbar {
+
+            width: 500px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Yeseva One", serif;
+            animation: slideFromRight 1s ease-out forwards;
+            margin-right: 80px;
+
+
+        }
+
+
+
+        .bigcontainer {
+            width: auto;
+            height: 550px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin-bottom: 50px;
+
+
+        }
+
+        .firstcontainer {
+            width: 500px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            animation: slideFromLeft 1s ease-out forwards;
+
+        }
+
+
+
+        span {
+            color: crimson;
+        }
+
+        #head {
+            font-size: 20px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 100;
+            margin-left: 25px;
+            margin-top: -50px;
+
+        }
+
+        #heading {
+            font-size: 80px;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-left: 15px;
+        }
+
+        .secondcontainer {
+            width: 500px;
+            height: 530px;
+            padding: 20px;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            margin-top: -30px;
+            margin-left: 70px;
+            animation: slideFromRight 1s ease-out forwards;
+
+        }
+
+
+        .button {
+            display: inline-block;
+            height: 40px;
+            width: 150px;
+            text-decoration: none;
+            border: 2px solid crimson;
+            text-align: center;
+            line-height: 40px;
+            color: black;
+            background-color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: 20px;
+            font-family: "Yeseva One", serif;
+        }
+
+        .button:hover {
+            background-color: black;
+            /* Change background color on hover */
+            color: white;
+            /* Change text color on hover */
+        }
+
+        .section1 {
+            margin-top: -100px;
+            height: auto;
+            width: 99%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .contentforhome {
+            height: 90vh;
+            width: 800px;
+
+            padding: 20px;
+        }
+
+        .homecontent {
+            font-size: 25px;
+
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 100px;
+        }
+
+        hr {
+            margin-left: 100px;
+            margin-right: 100px;
+        }
+
+        @keyframes slideFromLeft {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideFromRight {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .History {
+            height: 60px;
+            width: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            margin-top: 10px;
+            color: black;
+            border: 2px solid crimson;
+            overflow: hidden;
+
+
+        }
+
+        button[type="submit"] {
+            display: inline-block;
+            height: 60px;
+            width: 400px;
+            text-decoration: none;
+            border: 2px solid crimson;
+            text-align: center;
+            line-height: 40px;
+            color: rgb(255, 255, 255);
+            background-color: crimson;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: 40px;
+            font-family: "Yeseva One", serif;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #fd0606;
+
+        }
+
+        .container {
+            height: 320px;
+            width: 500px;
+
+            overflow: scroll;
+        }
+
+        .History a {
+            text-decoration: none;
+            color: black;
+
+        }
+    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sacramento&family=Yeseva+One&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="navbarcontainer">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='assets/asistente-robot.gif') }}" alt="Logo" />
+            <h2>
+                W<span>E</span>LCOME, {{ username }}!
+            </h2>
+        </div>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href="/" style="text-decoration: none; color: black;">Home</a></li>
+                    <li><a href="/about" style="text-decoration: none; color: black;">About</a></li>
+                    <li><a href="/contact" style="text-decoration: none; color: black;">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="bigcontainer">
+        <div class="firstcontainer">
+            <div class="uppercontent">
+
+
+                <h3 style="margin-left:50px;">Previous Chats</h3>
+                <div class="container">
+                    <ul>
+
+                        {% for chats in chat_record %}
+                        <li class="History"><a href="/chat/{{ userid }}/{{ chats['chatid'] }}">{{pdf_name[loop.index0]}}</a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+                <form action="/{{ userid }}" method="post">
+                    <input type="hidden" name="userid" value="{{ userid }}">
+                    <input type="hidden" name="chatid" value="">
+                    <button type="submit">New Chat +</button>
+                </form>
+            </div>
+
+        </div>
+        <div class="secondcontainer">
+            <img src="{{ url_for('static', filename='assets/mascot.gif') }}" alt="" />
+        </div>
+
+    </div>
+
+    </div>
+    <footer>
+        <p>&copy; 2024 Doc-Chat. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

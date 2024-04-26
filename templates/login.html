@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbarcontainer {
+            width: auto;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 300px;
+            height: 70px;
+            display: flex;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .navbar {
+
+            width: 500px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        nav ul li {
+            display: inline-block;
+            padding: 20px;
+            text-decoration: none;
+        }
+
+
+
+
+
+
+        span {
+            color: crimson;
+        }
+
+        .navbarcontainer {
+            width: auto;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .logo {
+
+            width: 300px;
+            height: 70px;
+            display: flex;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-left: 60px;
+            animation: slideFromLeft 1s ease-out forwards;
+
+        }
+
+        .navbar {
+            width: 500px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Yeseva One", serif;
+            animation: slideFromRight 1s ease-out forwards;
+
+        }
+
+        span {
+            color: crimson;
+        }
+
+
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+
+        }
+
+        hr {
+            margin-left: 100px;
+            margin-right: 100px;
+        }
+
+        .loginsection {
+            height: 500px;
+            width: 100%;
+
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+
+        }
+
+        .containerform {
+            height: 470px;
+            width: 400px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form {
+
+            height: 400px;
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-self: center;
+            align-self: center;
+            margin-top: 100px;
+
+        }
+
+        input[type="text"] {
+            height: 30px;
+            border-radius: 15px;
+            padding: 5px;
+            margin: 10px;
+            border: 1px solid crimson;
+            animation: slideFromRight 1s ease-out forwards;
+        }
+
+        input[type="password"] {
+            height: 30px;
+            border-radius: 15px;
+            padding: 5px;
+            margin: 10px;
+            border: 1px solid crimson;
+            animation: slideFromRight 1s ease-out forwards;
+        }
+
+        label {
+            margin-left: 12px;
+            margin-bottom: -10px;
+            font-family: "Yeseva One", serif;
+            animation: slideFromRight 1s ease-out forwards;
+        }
+
+        button {
+            background-color: crimson;
+            color: white;
+            width: 260px;
+            border: 2px solid crimson;
+            padding: 5px;
+            margin-left: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-family: "Yeseva One", serif;
+            border-radius: 5px;
+
+            cursor: pointer;
+            animation: slideFromRight 1s ease-out forwards;
+            transition: background-color 0.3s ease;
+
+        }
+
+
+        button:hover {
+            background-color: #b30000;
+
+        }
+
+        .mascot {
+            height: 470px;
+            width: 400px;
+            animation: slideFromLeft 1s ease-out forwards;
+
+        }
+
+        @keyframes slideFromLeft {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideFromRight {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sacramento&family=Yeseva+One&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="navbarcontainer">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='assets/asistente-robot.gif') }}" alt="Logo" />
+            <h2>
+                LO<span>G</span>IN
+            </h2>
+        </div>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href="/" style="text-decoration: none; color: black;">Home</a></li>
+                    <li><a href="/signup" style="text-decoration: none; color: black;">Sign-Up</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="loginsection">
+        <div class="mascot">
+            <img src="{{ url_for('static', filename='assets/mascot2.gif') }}" alt="">
+        </div>
+        <div class="containerform">
+            <form action="/login" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button><br>
+                <p style="margin:0px auto; font-size:15px;animation: slideFromRight 1s ease-out forwards;">Don't have an
+                    account? <a href="/signup">Sign Up</a></p>
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+    <footer>
+        <p>&copy; 2024 Doc-Chat. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

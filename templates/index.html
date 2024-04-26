@@ -1,0 +1,179 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Chat Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <h1>Welcome to PDF Chat Bot</h1>
+    <p>Upload a PDF file or submit a query:</p>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="file">Choose PDF:</label>
+        <input type="file" id="file" name="file"/><br><br>
+        <input type="submit" value="Upload PDF"/>
+    </form>
+    
+    <br>
+    <form action="/" method="post">
+        <label for="option">Option:</label>
+        <select id="option" name="option">
+            <option value="1">Summarize</option>
+            <option value="2">Q&A</option>
+            <option value="3">Create Flashcards</option>
+            <option value="4">Create Quiz</option>
+        </select><br><br>
+        <label for="query">Query:</label>
+        <input type="text" id="query" name="query"><br><br> 
+        <input type="submit" value="Submit Query">
+        
+    </form>
+    {% if response %}
+        <div>
+            {{ response | safe }}
+        </div>
+        {% endif %}
+        {% if res_pages %}
+        <div>
+            <h4>Citations</h4>
+            <ul>
+            {% for page in res_pages %}
+                <li>{{ page }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    <div class="mainChat">
+        <div class="chat-container">
+            {% for chat in chats %}
+                <div class="chat-message">
+                    <div class="chat-header">Message</div>
+                    <div class="chat-body">
+                        <div class="chat-query">YOU: {{ chat.query | safe}}</div>
+                        <div class="chat-response"><b>DOC-CHAT:</b> {{ chat.response | safe }}</div>
+                        <div>Citations : {{ chat.citations | safe }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="pdfcontainer">
+            <iframe src="{{ pdf_path }}" title="PDF Viewer" width="100%" height="600px"></iframe>
+        </div>
+    </div>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc-chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sacramento&family=Yeseva+One&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="navbarcontainer">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='assets/asistente-robot.gif') }}" alt="Logo" />
+            <h2>
+                CRA<span>F</span>T
+            </h2>
+        </div>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href="/" style="text-decoration: none; color: black;">Home</a></li>
+                    <li><a href="/about" style="text-decoration: none; color: black;">About</a></li>
+                    <li><a href="/contact" style="text-decoration: none; color: black;">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="bigcontainer">
+        <div class="firstcontainer">
+            <div class="uppercontent">
+                <h1 id="heading">
+                    Doc-<span>Chat,</span>
+                </h1>
+                <p id="head">
+                    Unlock the Power of Knowledge: Your Ultimate PDF Reader and Answer Provider!
+                </p>
+            </div>
+            <div class="lowercontent">
+                <form action="/" method="post" enctype="multipart/form-data">
+                    <label for="file">Upload PDF:</label>
+                    <input type="file" id="file" name="file"
+                        style="height: 20px;border-radius:10px; border: 2px dashed crimson; background-color:azure;width:390px;">
+                    <input type="submit" id="submitfile" value="Upload PDF">
+                </form>
+                
+            </div>
+        </div>
+        <div class="secondcontainer">
+            <img src="{{ url_for('static', filename='assets/mascot.gif') }}" alt="" />
+        </div>
+    </div>
+    <hr>
+    <div class="chat-container">
+        <div class="query-section">
+            <div class="answer-container" id="answer-container">
+                {% for chat in chats %}
+                <div class="answerbro">
+                    <div class="chat-query" style="font-weight:bolder">YOU: {{ chat.query | safe}}</div>
+                    <div class="chat-response"><b>DOC-CHAT:</b> {{ chat.response | safe }}</div>
+                    <div class="cit">Citations : {{ chat.citation | safe }}</div>
+                </div>
+                <br>
+                {% endfor %}
+
+
+
+            </div>
+            <div class="option-container">
+                <form action="/" method="post" class="custom-form">
+                    <label for="option" class="form-label">Option:</label>
+                    <select id="option" name="option" class="form-select">
+                        <option value="1">Summarize</option>
+                        <option value="2">Q&A</option>
+                        <option value="3">Create Flashcards</option>
+                        <option value="4">Create Quiz</option>
+                    </select>
+                    <label for="query" class="form-label">Query:</label>
+                    <input type="text" id="query" name="query" class="form-input">
+                    <input type="submit" value="Submit Query" class="form-submit">
+                </form>
+            </div>
+
+        </div>
+        <!-- <div class="pdfviewer">
+                <embed src="{{ pdf_path }}" type="application/pdf" width="100%" height="600px">
+                <iframe src = "{{pdf_path}}" id="pdfFrame" style="width: 100%; height: 600px; border: none; margin:0 auto;width:500px;"></iframe>
+        </div> -->
+    </div>
+
+    <!-- JavaScript to display selected PDF in iframe -->
+    <script>
+        document.getElementById('file').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var pdfData = event.target.result;
+                // For small PDFs, you can use data URL directly
+                // document.getElementById('pdfFrame').setAttribute('src', pdfData);
+
+                // For larger PDFs, you can use object URL
+                var pdfUrl = URL.createObjectURL(file);
+                document.getElementById('pdfFrame').setAttribute('src', pdfUrl);
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+
+</html>

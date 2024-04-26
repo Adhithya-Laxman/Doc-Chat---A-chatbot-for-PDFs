@@ -1,0 +1,606 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc-chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sacramento&family=Yeseva+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        h3 {
+            margin-top: 20px;
+            color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbarcontainer">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='assets/asistente-robot.gif') }}" alt="Logo" />
+            <h2>CRA<span>F</span>T</h2>
+        </div>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href="/" style="text-decoration: none;">Home</a></li>
+                    <li><a href="/about" style="text-decoration: none;">About</a></li>
+                    <li><a href="/contact" style="text-decoration: none;">Contact</a></li>
+                    <li><a href="/" style="text-decoration: none;">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <hr>
+
+    {% if not pdf_path_present %}
+    <p>Upload a PDF file or submit a query:</p>
+    <form action="/chat/{{userid}}/{{chatid}}" method="post" enctype="multipart/form-data">
+        
+        <label for="file">Choose PDF:</label>
+        <input type="file" id="file" name="file"/><br><br>
+        <input type="submit" value="Upload PDF"/>
+    </form>
+    {% endif %}
+    {% if pdf_path_present %}
+    
+    <div class="chat-container" style="display: flex;">
+        <div>
+            <iframe class="pdf" 
+                src= "{{ url_for('static', filename=pdf_path) }}"
+                width="800" height="500">
+            </iframe>
+        </div>
+        <div class="query-section">
+            <div class="answer-container" id="answer-container">
+                {% for chat in chats %}
+                <div class="answerbro">
+                    <div class="chat-query">YOU: {{ chat.query | safe }}</div>
+                    <div class="chat-response"><b>DOC-CHAT:</b> {{ chat.response | safe }}</div>
+                    <div class="cit">Citations: {{ chat.citation | safe }}</div>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+            <div class="option-container">
+                <form action="/chat/{{userid}}/{{chatid}}" method="post" class="custom-form">
+                    <label for="option" class="form-label">Option:</label>
+                    <select id="option" name="option" class="form-select">
+                        <option value="1">Summarize</option>
+                        <option value="2">Q&A</option>
+                        <option value="3">Create Flashcards</option>
+                        <option value="4">Create Quiz</option>
+                    </select>
+                    <label for="query" class="form-label">Query:</label>
+                    <input type="text" id="query" name="query" class="form-input">
+                    <input type="submit" value="Submit Query" class="form-submit">
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <script>
+        document.getElementById('file').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var pdfData = event.target.result;
+
+                var pdfUrl = URL.createObjectURL(file);
+                document.getElementById('pdfFrame').setAttribute('src', pdfUrl);
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat-Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbarcontainer {
+            width: auto;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 300px;
+            height: 70px;
+            display: flex;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .navbar {
+
+            width: 500px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        nav ul li {
+            display: inline-block;
+            padding: 20px;
+            text-decoration: none;
+        }
+
+        span {
+            color: crimson;
+        }
+
+        .navbarcontainer {
+            width: auto;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .logo {
+            width: 300px;
+            height: 70px;
+            display: flex;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-left: 0px;
+            animation: slideFromLeft 1s ease-out forwards;
+
+        }
+
+        .navbar {
+
+            width: 500px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Yeseva One", serif;
+            animation: slideFromRight 1s ease-out forwards;
+            margin-right: 80px;
+
+        }
+
+        .sectionnewchat {
+            height: 500px;
+            width: 100%;
+
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .infopart {
+            height: 500px;
+            width: 400px;
+
+        }
+
+        .imagepart {
+            height: 500px;
+            width: 400px;
+
+            display: flex;
+            flex-direction: column;
+            font-family: "Yeseva One", serif;
+        }
+
+        .buttonpart {
+            height: 100px;
+            width: 400px;
+            margin-top: -70px;
+
+        }
+
+        .imageofpdf {
+            height: 300px;
+            width: 400px;
+        }
+
+
+
+        #file {
+            display: block;
+            width: 95%;
+            margin-bottom: -20px;
+            padding: 10px;
+            border: 1px solid crimson;
+            border-radius: 14px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        #uploadsubmit {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 14px;
+            background-color: crimson;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        #uploadsubmit:hover {
+            background-color: #c20000;
+        }
+
+        .upload {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #head {
+            font-size: 30px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 100;
+            margin-left: 25px;
+            margin-top: -20px;
+
+        }
+
+        #heading {
+            font-size: 50px;
+            font-family: "Yeseva One", serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-left: 15px;
+        }
+
+        .chatcontainer {
+            height: 550px;
+            width: 1300px;
+            display: flex;
+            justify-content: space-around;
+            margin-left: 30px;
+            margin-right: 30px;
+            align-items: center;
+
+        }
+
+        .pdfcontainer {
+            height: 520px;
+            width: 550px;
+
+        }
+
+        .chat {
+            height: 520px;
+            width: 700px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        iframe {
+            height: 520px;
+            width: 550px;
+            border-radius: 20px;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .chatdeposit {
+            height: 450px;
+            width: 100%;
+            overflow-y: auto; /* Enable vertical scrollbar */
+            scroll-behavior: smooth; /* Smooth scrolling behavior */
+        }
+
+        .query1 {
+            height: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .answerbro {
+            margin-left: 20px;
+            margin-Right: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            padding-left: 40px;
+            padding-right: 40px;
+            background-color: linear-gradient(to bottom, blue, white);
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .chat-query {
+            padding: 10px;
+            height: auto;
+            background-color: #fce2e2;
+
+            color: #302d2d;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .chat-response {
+            height: auto;
+            min-height: 50px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 10px;
+            white-space: pre-wrap;
+            margin-top: 7px;
+            color: rgb(3, 3, 3);
+        }
+
+        hr {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .cit {
+            height: 30px;
+            color: white;
+            background-color: crimson;
+            padding: 10px;
+            margin-top: 7px;
+            border-radius: 10px;
+
+        }
+
+        .custom-form {
+
+            height: 80px;
+            width: 600px;
+            display: flex;
+
+
+
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        #option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+
+            border: 2px solid crimson;
+        }
+
+        #query {
+            height: 35px;
+            width: 430px;
+            border-radius: 10px;
+            border: 2px solid crimson;
+        }
+
+        .form-submit {
+            background-color: crimson;
+            /* Green background */
+            border: none;
+            height: 40px;
+            color: white;
+
+
+            text-align: center;
+
+            text-decoration: none;
+
+            display: inline-block;
+            font-size: 14px;
+
+            margin: 4px 2px;
+            /* Margin */
+            cursor: pointer;
+
+            border-radius: 10px;
+
+            transition: background-color 0.3s;
+            /* Smooth transition */
+        }
+    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sacramento&family=Yeseva+One&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="navbarcontainer">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='assets/asistente-robot.gif') }}" alt="Logo" />
+            <h2>
+                CRA<span>F</span>T
+            </h2>
+        </div>
+        <div class="navbar">
+            <nav>
+                <ul>
+                    <li><a href="/" style="text-decoration: none; color: black;">Home</a></li>
+                    <li><a href="/about" style="text-decoration: none; color: black;">About</a></li>
+                    <li><a href="/contact" style="text-decoration: none; color: black;">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% if not pdf_path_present %}
+    <div class="sectionnewchat">
+        <div class="infopart">
+            <img src="{{ url_for('static', filename='assets/uploadpdf.webp') }}" height="450px" width="450px" alt="">
+        </div>
+        <div class="imagepart">
+            <div class="imageofpdf">
+                <div class="uppercontent">
+                    <h1 id="heading">
+                        Up<span>load</span>
+                    </h1>
+                    <p id="head">
+                        To initiate a chat, please upload your <span>PDF</span> document. Let's get started!
+                    </p>
+                </div>
+            </div>
+            <div class="buttonpart">
+                <form action="/chat/{{userid}}/{{chatid}}" method="post" enctype="multipart/form-data" class="upload">
+                    <label for="file">Choose PDF:</label>
+                    <input type="file" id="file" name="file" /><br><br>
+                    <input type="submit" id="uploadsubmit" value="Upload PDF" />
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if pdf_path_present %}
+
+    <div class="chatcontainer">
+        <div class="pdfcontainer">
+            <iframe class="pdf" src= "{{ url_for('static', filename=pdf_path) }}" width="800" height="500">
+            </iframe>
+        </div>
+        <div class="chat">
+            <div class="chatdeposit">
+                {% for chat in chats %}
+                <div class="answerbro">
+                    <div class="chat-query">YOU: {{ chat.query | safe }}</div>
+                    <div class="chat-response"><b>DOC-CHAT:</b> {{ chat.response | safe }}</div>
+                    <div class="cit">Citations: {{ chat.citation | safe }}</div>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+            
+            <div class="query1">
+                <form action="/chat/{{userid}}/{{chatid}}" method="post" class="custom-form">
+
+                    <div class="queryy">
+                        <select id="option" name="option" class="form-select">
+                            <option value="1">Summarize</option>
+                            <option value="2">Q&A</option>
+                            <option value="3">Create Flashcards</option>
+                            <option value="4">Create Quiz</option>
+                        </select>
+                        <input type="text" id="query" name="query" class="form-input"
+                            placeholder="Enter Your Query here........">
+                        <input type="submit" value="Submit Query" class="form-submit">
+                    </div>
+
+
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+    {% endif %}
+    <footer>
+        <p>&copy; 2024 Doc-Chat. All rights reserved.</p>
+    </footer>
+    <script>
+        function scrollToBottom() {
+            var chatDeposit = document.querySelector('.chatdeposit');
+            chatDeposit.scrollTop = chatDeposit.scrollHeight;
+        }
+
+        // Simulate scrolling to the bottom initially
+        window.onload = function () {
+            scrollToBottom();
+        };
+
+        // Add event listener to the form submit button to scroll to bottom after new content is added
+        document.querySelector('.form-submit').addEventListener('click', function () {
+            setTimeout(scrollToBottom, 100); // Scroll after a short delay to allow time for new content to be added
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>
