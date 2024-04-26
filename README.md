@@ -45,7 +45,7 @@ This Flask application implements a PDF chatbot using the RAG (Retrieval-Augment
 
 ## Workflow
 
-![Workflow](static/assets/workflow.png)
+![Workflow](static/assets/Workflow.png)
 
 ## Installation
 
