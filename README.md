@@ -43,6 +43,10 @@ This Flask application implements a PDF chatbot using the RAG (Retrieval-Augment
 - **Flashcard Creation**: Creates flashcards containing essential information and key points from PDF documents for easy memorization.
 - **Quiz Question Generation**: Designs quiz questions with multiple-choice answers based on the content of PDF documents.
 
+## Workflow
+
+![Workflow](static/assets/workflow.png)
+
 ## Installation
 
 1. Install the required dependencies listed in `requirements.txt`:
