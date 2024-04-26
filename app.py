@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template
-from database import db, Chat
 from model import PDFChat_RAG
 import os
 import sqlite3
@@ -10,7 +9,6 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
 model = PDFChat_RAG()
 # db.create_all()
 pdf_path = None
@@ -25,116 +23,6 @@ def get_db_connection():
 def home():
     return render_template('home.html')
 
-    name = 'temporary'
-    if request.method == 'POST':
-        if 'file' in request.files:
-            file = request.files['file']
-            if file.filename != '':
-                name = file.filename.split(' ')
-                name = '_'.join(name)
-                base_dir = os.getcwd()
-                pdf_path = f'{base_dir}/PDFChat/static/{file.filename}'
-                file.save(pdf_path)
-                model.initialize_model(pdf_path, name)
-                conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chat.db')
-
-                cursor = conn.cursor()
-
-                cursor.execute("SELECT * FROM chat")
-
-                chats = cursor.fetchall()
-
-                chat_data = []
-                for chat in chats:
-                    chat_data.append({
-                        'chat_id': chat[1],  
-                        'query_num': chat[2], 
-                        'query': markdown.markdown(chat[3]), 
-                        'response': markdown.markdown(chat[4]),
-                        'citation':chat[5]
-                    })
-                cursor.close()
-                conn.close()
-
-
-                return render_template('index.html',chats=chat_data, pdf_path=pdf_path)
-
-        else:
-            data = request.form
-            option = int(data.get('option', 0))
-            query = data.get('query', '')
-            pdf_path = "/home/adminroot/Desktop/2105001/hackathon/PDFChat/static/Linux Pocket Guide.pdf"
-
-            if not option or not query:
-                return jsonify({'error': 'Missing option or query'})
-
-            result_pages, response = model.run(option, query)
-            
-            conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chat.db')
-            cursor = conn.cursor()
-
-            sql_insert = """
-                INSERT INTO chat (chat_id, query_num, query, response, citation)
-                VALUES (?, ?, ?, ?, ?)
-            """
-            # print(name)
-            values = (name, 1, query, response, str(result_pages))  
-            cursor.execute(sql_insert, values)
-
-            
-            conn.commit()
-            conn.close()
-            conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chat.db')
-
-            cursor = conn.cursor()
-
-            cursor.execute("SELECT * FROM chat")
-
-            chats = cursor.fetchall()
-            # print(chat)
-
-            chat_data = []
-            for chat in chats:
-                chat_data.append({
-                    'chat_id': chat[1],  
-                    'query_num': chat[2], 
-                    'query': markdown.markdown(chat[3]), 
-                    'response': markdown.markdown(chat[4]),
-                    'citation':chat[5]
-                })
-            cursor.close()
-            conn.close()
-
-
-            return render_template('index.html',chats=chat_data, pdf_path=pdf_path)
-    else:
-
-        conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chat.db')
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT * FROM chat")
-        chats = cursor.fetchall()
-
-        chat_data = []
-        print(chats)
-        for chat in chats:
-            chat_data.append({
-                'chat_id': chat[1],  
-                'query_num': chat[2], 
-                'query': markdown.markdown(chat[3]), 
-                'response': markdown.markdown(chat[4]),
-                'citation': ",".join(chat[5][1:-1].split(',')) if chat[5] is not None else ""
-
-            })
-        cursor.close()
-        conn.close()
-
-    # return chat_data
-
-        return render_template('index.html',chats = chat_data)
-
-# @app.route('/', methods=['GET'])
-# def get_chats():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

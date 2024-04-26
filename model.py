@@ -25,7 +25,7 @@ class PDFChat_RAG:
         self.document = None
         self.option = None
         self.retriever = None
-        self.__API_KEY = 'AIzaSyCwu-pdy8MfRnCwJqkaAyXRA_zDzYxhQ60'
+        self.__API_KEY = 'YOUR-GOOGLE-API-SECRET-KEY'
         self.db = None
         self.pages = None
         self.name = None
@@ -130,11 +130,6 @@ class PDFChat_RAG:
         for i in response['context']:
             if i.metadata['page'] > 10:
                 result_pages.append(i.metadata['page'])
-
-        #Print the answer to the question
-        # Markdown(response['answer'])
-
-        # Call a helper funtion to store the query, response to the database
         
         return result_pages, response['answer']
 
