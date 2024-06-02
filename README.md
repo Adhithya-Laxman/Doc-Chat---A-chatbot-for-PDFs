@@ -79,24 +79,51 @@ Got it! Here's the updated directory structure section in the README file to inc
 ## Directory Structure
 
 ```
-pdf-chatbot-flask/
-│
-├── app.py                # Flask application entry point
-├── db_init.py            # Database initialization script
-├── model.py              # PDFChat_RAG model implementation
-├── requirements.txt      # List of required dependencies
-├── static/               # Static assets (CSS, JS)
-│   ├── assets/           # Image assets for HTML/CSS front end
-│   │   ├── image1.jpg
-│   │   ├── image2.png
-│   │   └── ...
-│   └── css/              # CSS stylesheets
-│       └── style.css
-└── templates/            # HTML templates
-    ├── index.html        # Main page template
-    ├── result.html       # Result page template
-    └── error.html        # Error page template
+├── app.py
+├── db
+│   └── chatdb2.db
+├── db_init.py
+├── model.py
+├── README.md
+├── requirements.txt
+├── static
+│   ├── assets
+│   │   ├── animatedback1.png
+│   │   ├── asistente-robot.gif
+│   │   ├── book-transparent.gif
+│   │   ├── Gifelement.gif
+│   │   ├── mascot2.gif
+│   │   ├── mascot.gif
+│   │   ├── robot.gif
+│   │   ├── uploadpdf.webp
+│   │   └── Workflow.png
+│   └── css
+│       └── index.css
+└── templates
+    ├── chatpage1.html
+    ├── chatpage.html
+    ├── dashboard.html
+    ├── home.html
+    ├── indexf.html
+    ├── index.html
+    ├── login.html
+    ├── newchatpage.html
+    └── signup.html
+
 ```
+
+
+## Example Outputs
+
+### Front End
+![Front End](static/assets/FrontEndImage.png)
+
+### Chatbot Answer
+![Chatbot Answer](static/assets/AnswerImage.png)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## License
 
