@@ -125,8 +125,3 @@ Got it! Here's the updated directory structure section in the README file to inc
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
