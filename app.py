@@ -20,7 +20,7 @@ pdf_path = None
 # Home page endpoint
 def get_db_connection():
     
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect('./db/chatdb2.db')   
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -139,7 +139,7 @@ def user_chats(userid, chatid):
                 file.save(pdf_path)
                 
                 
-                conn = sqlite3.connect(db_path)
+                conn = sqlite3.connect('./db/chatdb2.db')   
                 cursor = conn.cursor()
                 cursor.execute('Update Connector set pdfpath = ? where userid=? and chatid = ?', (pdf_path, userid,chatid))
                 conn.commit()
@@ -223,7 +223,7 @@ def user_chats(userid, chatid):
             conn.commit()
             conn.close()
             
-            conn = sqlite3.connect(db_path)
+            conn = sqlite3.connect('./db/chatdb2.db')   
             cursor = conn.cursor()
 
             cursor.execute("SELECT * FROM chat")
