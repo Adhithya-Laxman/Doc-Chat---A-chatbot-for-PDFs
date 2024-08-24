@@ -1,5 +1,6 @@
 import textwrap
 import chromadb
+import os
 
 import google.generativeai as genai
 import google.ai.generativelanguage as glm
@@ -25,7 +26,7 @@ class PDFChat_RAG:
         self.document = None
         self.option = None
         self.retriever = None
-        self.__API_KEY = 'YOUR-GOOGLE-API-SECRET-KEY'
+        self.__API_KEY = os.getenv('API_KEY')  # Fetch API_KEY from environment variable
         self.db = None
         self.pages = None
         self.name = None
