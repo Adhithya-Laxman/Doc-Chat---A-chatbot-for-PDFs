@@ -1,4 +1,5 @@
 Flask
+gunicorn
 Markdown==3.3.4
 chromadb>=0.4.0
 google-generativeai
