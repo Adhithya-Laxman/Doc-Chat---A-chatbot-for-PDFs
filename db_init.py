@@ -1,8 +1,8 @@
 import sqlite3
 
 # Connect to SQLite database (creates a new DB if it doesn't exist)
-conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chatdb2.db')
-
+db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+    conn = sqlite3.connect(db_path)
 # Create a cursor object to execute SQL commands
 cursor = conn.cursor()
 

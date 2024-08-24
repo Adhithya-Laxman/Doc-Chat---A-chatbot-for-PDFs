@@ -5,17 +5,22 @@ import sqlite3
 import markdown
 from flask import Flask, render_template, request, redirect, url_for
 
+# Get the base directory from the environment variable
+base_dir = os.getenv('BASE_DIR', '.')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
+# Construct the database URI using the base directory
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(base_dir, "db", "chat2.db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 model = PDFChat_RAG()
+
 # db.create_all()
 pdf_path = None
 # app.app_context().push()
 # Home page endpoint
 def get_db_connection():
-    conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chatdb2.db')
+    db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -133,8 +138,8 @@ def user_chats(userid, chatid):
                 pdf_path = f'{base_dir}/PDFChat/static/{file.filename}'
                 file.save(pdf_path)
                 
-                conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chatdb2.db')
-
+                db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+                conn = sqlite3.connect(db_path)
                 cursor = conn.cursor()
                 cursor.execute('Update Connector set pdfpath = ? where userid=? and chatid = ?', (pdf_path, userid,chatid))
                 conn.commit()
@@ -185,8 +190,8 @@ def user_chats(userid, chatid):
             print("OPTTTTTTTTTTT",option)
             query = data.get('query', '')
 
-            conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chatdb2.db')
-                #print("HEYYYYYYYYYYYYY", pdf_path)
+            db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+            conn = sqlite3.connect(db_path)                #print("HEYYYYYYYYYYYYY", pdf_path)
 
             cursor = conn.cursor()
             cursor.execute('SELECT pdfpath FROM Connector WHERE userid = ? AND chatid = ?',(userid, chatid))
@@ -201,7 +206,8 @@ def user_chats(userid, chatid):
             # print(pdf_path.split('/')[-1])
             result_pages, response = model.run(option, query, pdf_path, 'temporary')
             
-            conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chatdb2.db')
+            db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+            conn = sqlite3.connect(db_path)            
             cursor = conn.cursor()
 
             sql_insert = """
@@ -216,8 +222,8 @@ def user_chats(userid, chatid):
             
             conn.commit()
             conn.close()
-            conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chatdb2.db')
-
+            db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+            conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
             cursor.execute("SELECT * FROM chat")
@@ -264,7 +270,8 @@ def user_chats(userid, chatid):
 
 
     # Fetch username from the database using userid
-    conn = sqlite3.connect('/home/adminroot/Desktop/2105001/hackathon/PDFChat/db/chatdb2.db')
+    db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+    conn = sqlite3.connect(db_path)    
     cursor = conn.cursor()
 
     cursor.execute(f"SELECT * FROM chat where chatid = (?)", (chatid,))
