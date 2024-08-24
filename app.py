@@ -191,7 +191,7 @@ def user_chats(userid, chatid):
             query = data.get('query', '')
 
             db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
-            conn = sqlite3.connect(db_path)                #print("HEYYYYYYYYYYYYY", pdf_path)
+            conn = sqlite3.connect('./db/chatdb2.db')                #print("HEYYYYYYYYYYYYY", pdf_path)
 
             cursor = conn.cursor()
             cursor.execute('SELECT pdfpath FROM Connector WHERE userid = ? AND chatid = ?',(userid, chatid))
@@ -207,7 +207,7 @@ def user_chats(userid, chatid):
             result_pages, response = model.run(option, query, pdf_path, 'temporary')
             
             db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
-            conn = sqlite3.connect(db_path)            
+            conn = sqlite3.connect('./db/chatdb2.db')         
             cursor = conn.cursor()
 
             sql_insert = """
@@ -271,7 +271,7 @@ def user_chats(userid, chatid):
 
     # Fetch username from the database using userid
     db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
-    conn = sqlite3.connect(db_path)    
+    conn = sqlite3.connect('./db/chatdb2.db') 
     cursor = conn.cursor()
 
     cursor.execute(f"SELECT * FROM chat where chatid = (?)", (chatid,))
