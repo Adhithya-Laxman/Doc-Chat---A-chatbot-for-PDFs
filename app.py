@@ -135,7 +135,7 @@ def user_chats(userid, chatid):
                 name = file.filename.split(' ')
                 name = '_'.join(name)
                 base_dir = os.getcwd()
-                pdf_path = f'{base_dir}/PDFChat/static/{file.filename}'
+                pdf_path = f'./static/{file.filename}'
                 file.save(pdf_path)
                 
                 
