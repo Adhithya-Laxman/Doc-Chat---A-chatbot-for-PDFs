@@ -19,7 +19,7 @@ pdf_path = None
 # app.app_context().push()
 # Home page endpoint
 def get_db_connection():
-    db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+    
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
@@ -138,7 +138,7 @@ def user_chats(userid, chatid):
                 pdf_path = f'{base_dir}/PDFChat/static/{file.filename}'
                 file.save(pdf_path)
                 
-                db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+                
                 conn = sqlite3.connect(db_path)
                 cursor = conn.cursor()
                 cursor.execute('Update Connector set pdfpath = ? where userid=? and chatid = ?', (pdf_path, userid,chatid))
@@ -190,7 +190,7 @@ def user_chats(userid, chatid):
             print("OPTTTTTTTTTTT",option)
             query = data.get('query', '')
 
-            db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+            
             conn = sqlite3.connect('./db/chatdb2.db')                #print("HEYYYYYYYYYYYYY", pdf_path)
 
             cursor = conn.cursor()
@@ -206,7 +206,7 @@ def user_chats(userid, chatid):
             # print(pdf_path.split('/')[-1])
             result_pages, response = model.run(option, query, pdf_path, 'temporary')
             
-            db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+            
             conn = sqlite3.connect('./db/chatdb2.db')         
             cursor = conn.cursor()
 
@@ -222,7 +222,7 @@ def user_chats(userid, chatid):
             
             conn.commit()
             conn.close()
-            db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+            
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
@@ -270,7 +270,7 @@ def user_chats(userid, chatid):
 
 
     # Fetch username from the database using userid
-    db_path = os.path.join(base_dir, 'db', 'chatdb2.db')
+    
     conn = sqlite3.connect('./db/chatdb2.db') 
     cursor = conn.cursor()
 
